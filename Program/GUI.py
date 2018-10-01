@@ -5,8 +5,8 @@ from threading import Thread
 
 from Server import *
 
-t = Thread(target=server, args=())
-t.start()
+#t = Thread(target=server, args=())
+#t.start()
 
 
 def Send():
@@ -18,6 +18,40 @@ def Send():
     # Msg.configure(state='disabled')
 
     return Var
+
+
+def Add_Friend():
+    ADD = Toplevel(root)
+    ADD.geometry('400x300+443+145')
+    ADD.title('Invite')
+    ADD.configure(background="#d9d9d9")
+
+    Label1 = Label(ADD)
+    Label1.place(relx=0.175, rely=0.167, height=21, width=63)
+    Label1.configure(background="#d9d9d9",text='Digite o IP:')
+
+    IP_Amigo = Entry(ADD)
+    IP_Amigo.place(relx=0.475, rely=0.167, height=20, relwidth=0.41)
+
+    PORT_Amigo = Entry(ADD)
+    PORT_Amigo.place(relx=0.475, rely=0.4, height=20, relwidth=0.41)
+
+    Label2 = Label(ADD)
+    Label2.place(relx=0.125, rely=0.367, height=31, width=104)
+    Label2.configure(background="#d9d9d9",text='Digite a Porta',width=104)
+
+    Button1 = Button(ADD)
+    Button1.place(relx=0.4, rely=0.667, height=44, width=87)
+    Button1.configure(background="#d9d9d9",text='Button',width=87,command=Add_Friend2(IP_Amigo,PORT_Amigo))
+    
+
+def Add_Friend2(IP_Amigo,PORT_Amigo):
+    Temp = IP_Amigo.get([])
+    Temp2 = PORT_Amigo.get()
+    print temp
+    return
+
+    ADD.mainloop()
 
 
 root = Tk()
@@ -34,7 +68,7 @@ Nome.configure(anchor=W, background="#d9d9d9", text='Andre Felipe Tavares')
 Nome.place(relx=0.013, rely=0.133, height=51, width=484)
 
 Convidar = Button(Header)
-Convidar.configure(background="#d9d9d9", text='Convidar')
+Convidar.configure(background="#d9d9d9", text='Convidar',command=Add_Friend)
 Convidar.place(relx=0.863, rely=0.267, height=34, width=97)
 
 Label_IP = Label(Header)
