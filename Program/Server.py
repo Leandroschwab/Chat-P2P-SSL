@@ -3,9 +3,9 @@ import socket
 from ThreadServer import *
 from threading import Thread, Lock, BoundedSemaphore, Semaphore
 
-def server():
+def server(porta):
     HOST = ''                 # Symbolic name meaning all available interfaces
-    PORT = 50999               # Arbitrary non-privileged port
+    PORT = porta               # Arbitrary non-privileged port
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #IPv4,tipo de socket
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((HOST, PORT)) #liga o socket com IP e porta

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import socket
 import sqlite3
-from threading import *
-
+from Controll_functions import *
 
 def createDB():
     connSQL = sqlite3.connect('Database/user.db')
@@ -27,11 +26,8 @@ def getUsuariosDB():                                #retorna uma matriz/lista no
             Valor={}
             Valor['ip']= str(linha[1])
             Valor['porta'] = str(linha[2])
-            print i
+            Valor['online'] = checkOnlineOne(str(linha[1]),str(linha[2]))
             usuarios.append (Valor)
-            #usuarios[i] = [str(linha[1]), str(linha[2])]
-
-
             i = i + 1
     connSQL.close()
     return usuarios
@@ -47,19 +43,9 @@ def addUsuarioDB(ip,porta):                         #addUsuarioDB("123.456.779.2
     connSQL.close()
     print "addUsuarioDB: finish"
 
-def checkOnlineAll():
-    connSQL = sqlite3.connect('Database/user.db')
-    cursor = connSQL.cursor()
-    cursor.execute("SELECT * FROM Users;")
-    data = cursor.fetchall()
-    if data:
-        for linha in data:
-            checkOnlineOne(str(linha[1]), str(linha[2]))
-    connSQL.close()
-
-
 if __name__ == "__main__":
-
-    addUsuarioDB("123.456.779.231","5050")
-    usuarios =  getUsuariosDB()
-    print usuarios
+    usuarios= getUsuariosDB()
+    #print usuarios[1]
+    for valor in usuarios:
+        print valor['ip']
+        #Listbox.insert(END, usuarios[i].valor['ip'] + ':' + usuarios[i].valor['porta'] + '        Status' +                       usuarios[i].valor['online'])

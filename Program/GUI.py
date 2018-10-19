@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from Tkinter import *
 import ttk
+from DB_Funcions import *
+
+
 from threading import Thread
 
 from Server import *
 
 #t = Thread(target=server, args=())
 #t.start()
-
 
 def Send():
     Var = Chat.get(1.0, END)
@@ -50,6 +52,9 @@ def Add_Friend2():
     global PORT_Entry , IP_Entry ,ADD
     Temp = IP_Entry.get()
     Temp2 = PORT_Entry.get()
+
+    addUsuarioDB(Temp,Temp2)
+
     print Temp
     Listbox.insert(END, Temp + '        Status')
     ADD.destroy()
@@ -141,9 +146,14 @@ Msg.configure(width='10', xscrollcommand='True')
 Msg.insert(END, 'Teste \n')
 Msg.place(relx='0.088', rely='0.076', relheight='0.889', relwidth='0.489')
 
+usuarios = getUsuariosDB()
+
 Listbox = Listbox(Body)
 Listbox.configure(width='214', yscrollcommand='True')
-Listbox.insert(END, 'André Felipe Tavares' + '        Status')
+
+for valor in usuarios:
+    Listbox.insert(END, valor['ip']+':'+valor['porta']+ " "+ str(valor['online']))
+#Listbox.insert(END, 'André Felipe Tavares' + '        Status')
 Listbox.bind("<Double-Button-1>", OpenChat)
 Listbox.place(relx='0.7', rely='0.076', relheight='0.891', relwidth='0.268')
 
