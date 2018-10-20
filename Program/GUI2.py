@@ -4,6 +4,7 @@ import ttk
 from threading import Thread
 
 from Server import *
+from DB_Funcions import *
 
 #t = Thread(target=server, args=())
 #t.start()
@@ -51,6 +52,9 @@ def Add_Friend2():
     global PORT_Entry , IP_Entry ,ADD
     Temp = IP_Entry.get()
     Temp2 = PORT_Entry.get()
+
+    addUsuarioDB(Temp,Temp2)            #add Usuario no Banco de dados
+
     print Temp
     Listbox.insert(END, Temp + '        Status')
     ADD.destroy()
@@ -69,7 +73,7 @@ def newWindow(Amigo):
     global ChatEntry1 , ChatText1
     ChatWindow = Toplevel(root)
     ChatWindow.geometry("529x372+325+131")
-    ChatWindow.title("Chat Window")
+    ChatWindow.title("Chat Window " + Amigo)
     ChatWindow.configure(background="#d9d9d9")
 
     ChatFrame1 = Frame(ChatWindow)
@@ -149,6 +153,10 @@ Listbox = Listbox(Body)
 Listbox.configure(width='214', yscrollcommand='True')
 Listbox.bind("<Double-Button-1>", OpenChat)
 Listbox.place(relx=0.228, rely=0.058, relheight=0.846,relwidth=0.567)
+
+usuarios = getUsuariosDB()          #pega todos usuario no banco de dados
+for valor in usuarios:
+    Listbox.insert(END, valor['ip']+':'+valor['porta']+ "       status: "+ str(valor['online']))
 
 #Frame3 = Frame(root)
 #Frame3.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
