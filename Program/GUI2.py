@@ -10,8 +10,8 @@ from DB_Funcions import *
 #t.start()
 
 
-def Send():
-    global ChatEntry1 , ChatText1
+def Send(ChatEntry1,ChatText1):
+    print "Send: Started"
     Var = ChatEntry1.get()
     print Var
     ChatEntry1.delete(0,END)
@@ -63,14 +63,15 @@ def Add_Friend2():
     ADD.mainloop()
 
 def OpenChat(event):
-    print 'hi'
+    print 'OpenChat: Started'
     Chat = event.widget
     selection = Chat.curselection()
     Amigo = Chat.get(selection[0])
     newWindow(Amigo)
 
 def newWindow(Amigo):
-    global ChatEntry1 , ChatText1
+    print "newWindow: Started"
+
     ChatWindow = Toplevel(root)
     ChatWindow.geometry("529x372+325+131")
     ChatWindow.title("Chat Window " + Amigo)
@@ -107,7 +108,7 @@ def newWindow(Amigo):
     ChatButton1 = Button(ChatFrame3)
     ChatButton1.place(relx=0.774, rely=0.235, height=44, width=87)
     ChatButton1.configure(background="#d9d9d9",text='Enviar',width=87)
-    ChatButton1.configure(command=Send)
+    ChatButton1.configure(command=lambda *args: Send(ChatEntry1,ChatText1))
 
     return
 
