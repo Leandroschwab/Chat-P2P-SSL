@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import traceback
-def novaConn(conn,):
+def novaConn(conn,usuarios):
     while 1:
         try:
             data = conn.recv(1024)  # Recebe os dados
