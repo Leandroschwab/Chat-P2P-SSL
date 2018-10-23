@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from Tkinter import *
-from  GUI2 import newWindow
+
 import traceback
 
-def novaConn(conn,usuarios):
+def novaConn(conn,usuarios,VarData):
     while 1:
         try:
             data = conn.recv(1024)  # Recebe os dados
@@ -15,7 +15,7 @@ def novaConn(conn,usuarios):
                 print "Servidou recebeu linha: " + str(linha)
 
                 if (msgRecA[0]=="Mensagem-chat"):
-                    mensagemChat(usuarios,msgRecA)
+                    mensagemChat(usuarios,msgRecA,VarData)
 
         except Exception as e:
             print('Um erro ocorreu!')
@@ -24,27 +24,25 @@ def novaConn(conn,usuarios):
             break
     conn.close()
 
-def mensagemChat(usuarios,msgRecA):
+def mensagemChat(usuarios,msgRecA,VarData):
     print "mensagemChat: started"
     porta = msgRecA[1]
     id = getIDPort(porta,usuarios)
     print id
-    if (usuarios[id]['Janela']==True ):
-        usuarios[id]['ChatText'].insert(INSERT, str(porta)+': ' + msgRecA[2] + "\n")
-    else:
-        print "abrindo janela"
-        newWindow(usuarios[id], id)
-        usuarios[id]['ChatText'].insert(INSERT, str(porta)+': ' + msgRecA[2] + "\n")
-
+    try:
+        if (usuarios[id]['Janela']==True ):
+            usuarios[id]['ChatText'].insert(INSERT, str(porta)+': ' + msgRecA[2] + "\n")
+        else:
+            print "janela esta fechada "
+    except Exception as e:
+        print "janela esta fechada "
 
 
 def getIDPort(porta,usuarios):
     print "getIDPort: started"
-    i=0
     for valor in usuarios:
-        if (valor['ip']==porta):
+        if (valor['porta']==porta):
             return i
-        i=+1
     print "Erro Porta==usuario nao encontrado"
     return -1
 
