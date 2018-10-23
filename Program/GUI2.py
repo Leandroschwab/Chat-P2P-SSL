@@ -10,19 +10,17 @@ from DB_Funcions import *
 def Send(ChatEntry1, ChatText1, Amigo, ChatWindow):
     print "Send: Started"
     Var = ChatEntry1.get()
-    print Var
     ChatEntry1.delete(0, END)
     # Msg.configure(state='enabled')
     ChatText1.insert(INSERT, 'Eu: ' + Var + "\n")
     # Msg.configure(state='disabled')
+    mensagem = "Mensagem-chat-+,+-"+str(PORT)+"-+,+-"+Var
 
-    '''
     connS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
     connS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     connS.connect((Amigo['ip'], int(Amigo['porta'])))  # Abre uma conexão com IP e porta especificados
-    connS.sendall("mensagem")
+    connS.sendall(mensagem)
     connS.close()
-    '''
 
     return  # O que essa funçao retorna ?? ela ja nao insere o texto no "ChatText1.insert(INSERT, 'Eu: ' + Var + "\n")"
 
@@ -83,7 +81,6 @@ def newWindow(Amigo, id):
     ChatWindow.title("Chat Window " + str(Amigo['ip']) + ":" + Amigo['porta'])
     ChatWindow.configure(background="#d9d9d9")
 
-
     ChatFrame1 = Frame(ChatWindow)
     ChatFrame1.place(relx=0.0, rely=0.0, relheight=0.148, relwidth=1.002)
     ChatFrame1.configure(relief=GROOVE, background="#d9d9d9", width=530)
@@ -117,82 +114,86 @@ def newWindow(Amigo, id):
     ChatButton1.configure(background="#d9d9d9", text='Enviar', width=87)
     ChatButton1.configure(command=lambda *args: Send(ChatEntry1, ChatText1, Amigo, ChatWindow))
 
-    usuarios[id]['Janela'] = True                   #armazena a informaçao q a janela esta aberta
-    usuarios[id]['ChatText'] = ChatText1            #armazena a informaçao do local da janela,
-                                                    # para ser usado pelo servidor escrever na janela
-    ChatWindow.protocol("WM_DELETE_WINDOW",lambda: on_closing_chat(id, ChatWindow))  # executa o comando avisando q a janela fechou
+    usuarios[id]['Janela'] = True  # armazena a informaçao q a janela esta aberta
+    usuarios[id]['ChatText'] = ChatText1  # armazena a informaçao do local da janela,
+    # para ser usado pelo servidor escrever na janela
+    ChatWindow.protocol("WM_DELETE_WINDOW",
+                        lambda: on_closing_chat(id, ChatWindow))  # executa o comando avisando q a janela fechou
 
     return
 
 
-def on_closing_chat(id,ChatWindow):        # executa quando fecha a janela do chat
+def on_closing_chat(id, ChatWindow):  # executa quando fecha a janela do chat
     print "on_closing_chat: fechando a janela"
-    usuarios[id]['Janela'] = False      #armazena a informaçao q a janela esta fechada
+    usuarios[id]['Janela'] = False  # armazena a informaçao q a janela esta fechada
 
     ChatWindow.destroy()
 
+if __name__ == "__main__":
+    root = Tk()
+    root.title('Chat p2p')
+    root.geometry('395x424+428+131')
+    root.configure(background="#d9d9d9")
 
-root = Tk()
-root.title('Chat p2p')
-root.geometry('395x424+428+131')
-root.configure(background="#d9d9d9")
+    Header = Frame(root)
+    Header.configure(width=125, background="#d9d9d9")
+    Header.place(relheight=0.126, relwidth=1.005)
 
-Header = Frame(root)
-Header.configure(width=125, background="#d9d9d9")
-Header.place(relheight=0.126, relwidth=1.005)
+    Nome = Label(Header)
+    Nome.configure(anchor=W, background="#d9d9d9", text='Andre Felipe Tavares')
+    Nome.place(relx=0.013, rely=0.100, height=51, width=150)
 
-Nome = Label(Header)
-Nome.configure(anchor=W, background="#d9d9d9", text='Andre Felipe Tavares')
-Nome.place(relx=0.013, rely=0.100, height=51, width=150)
+    Convidar = Button(Header)
+    Convidar.configure(background="#d9d9d9", text='Adicionar', command=Add_Friend)
+    Convidar.place(relx=0.785, rely=0.175, height=30, width=77)
 
-Convidar = Button(Header)
-Convidar.configure(background="#d9d9d9", text='Adicionar', command=Add_Friend)
-Convidar.place(relx=0.785, rely=0.175, height=30, width=77)
+    Label_IP = Label(Header)
+    Label_Port = Label(Header)
+    Label_IP.configure(background="#d9d9d9", text='Ip')
+    Label_Port.configure(background="#d9d9d9", text='Porta')
+    Label_IP.place(relx=0.582, rely=0.118, height=21, width=34)
+    Label_Port.place(relx=0.582, rely=0.471, height=21, width=34)
 
-Label_IP = Label(Header)
-Label_Port = Label(Header)
-Label_IP.configure(background="#d9d9d9", text='Ip')
-Label_Port.configure(background="#d9d9d9", text='Porta')
-Label_IP.place(relx=0.582, rely=0.118, height=21, width=34)
-Label_Port.place(relx=0.582, rely=0.471, height=21, width=34)
+    Body = Frame(root)
+    Body.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
+    Body.place(relx=0.0, rely=0.189, relheight=0.814, relwidth=1.005)
 
-Body = Frame(root)
-Body.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
-Body.place(relx=0.0, rely=0.189, relheight=0.814, relwidth=1.005)
+    # TSeparator1 = ttk.Separator(Body)
+    # TSeparator1.configure(orient="vertical")
+    # TSeparator1.place(relx=0.656, rely=-0.013, relheight=1.013)
 
-# TSeparator1 = ttk.Separator(Body)
-# TSeparator1.configure(orient="vertical")
-# TSeparator1.place(relx=0.656, rely=-0.013, relheight=1.013)
+    # Msg = Text(Body)
+    # Msg.configure(width='10', xscrollcommand='True')
+    # Msg.insert(END, 'Teste \n')
+    # Msg.place(relx='0.088', rely='0.076', relheight='0.889', relwidth='0.489')
 
-# Msg = Text(Body)
-# Msg.configure(width='10', xscrollcommand='True')
-# Msg.insert(END, 'Teste \n')
-# Msg.place(relx='0.088', rely='0.076', relheight='0.889', relwidth='0.489')
+    Listbox = Listbox(Body)
+    Listbox.configure(width='214', yscrollcommand='True')
+    Listbox.bind("<Double-Button-1>", OpenChat)
+    Listbox.place(relx=0.228, rely=0.058, relheight=0.846, relwidth=0.567)
 
-Listbox = Listbox(Body)
-Listbox.configure(width='214', yscrollcommand='True')
-Listbox.bind("<Double-Button-1>", OpenChat)
-Listbox.place(relx=0.228, rely=0.058, relheight=0.846, relwidth=0.567)
+    # Frame3 = Frame(root)
+    # Frame3.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
+    # Frame3.place(relx='0.0', rely='0.773', relheight='0.227', relwidth='1.005')
 
-# Frame3 = Frame(root)
-# Frame3.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
-# Frame3.place(relx='0.0', rely='0.773', relheight='0.227', relwidth='1.005')
+    # Button_Send = Button(Frame3)
+    # Button_Send.configure(background="#d9d9d9", text='Send')
+    # Button_Send.configure(command=Send)
+    # Button_Send.place(relx='0.788', rely='0.148', height='84', width='127')
 
-# Button_Send = Button(Frame3)
-# Button_Send.configure(background="#d9d9d9", text='Send')
-# Button_Send.configure(command=Send)
-# Button_Send.place(relx='0.788', rely='0.148', height='84', width='127')
+    # Chat = Text(Frame3)
+    # Chat.configure(borderwidth="2", font='Helvetica 14')
+    # Chat.place(relx='0.088', rely='0.222', height='70', relwidth='0.655')
 
-# Chat = Text(Frame3)
-# Chat.configure(borderwidth="2", font='Helvetica 14')
-# Chat.place(relx='0.088', rely='0.222', height='70', relwidth='0.655')
+    usuarios = getUsuariosDB()  # pega todos usuario no banco de dados
+    for valor in usuarios:
+        Listbox.insert(END, valor['ip'] + ':' + valor['porta'] + "       status: " + str(valor['online']))
 
-usuarios = getUsuariosDB()  # pega todos usuario no banco de dados
-for valor in usuarios:
-    Listbox.insert(END, valor['ip'] + ':' + valor['porta'] + "       status: " + str(valor['online']))
+    global PORT
+    PORT = input("digite a porta: ")
 
-print "iniciando servidor"
-t = Thread(target=server, args=(usuarios,))
-t.start()
+    print "iniciando servidor"
+    t = Thread(target=server, args=(usuarios,PORT))
+    t.start()
 
-root.mainloop()
+    root.mainloop()
