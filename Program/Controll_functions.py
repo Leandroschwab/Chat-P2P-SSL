@@ -8,6 +8,7 @@ def checkOnlineOne(ip,porta):
         conn.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         conn.connect((ip, int(porta)))  # Abre uma conexão com IP e porta especificados
         conn.close()
+
         return True
     except Exception as e:
         #print('Usuario Offline ' + ip + ':' + porta)
@@ -19,7 +20,7 @@ def checkOnlineALL(usuarios,VarData):
     VarData['Listbox'].delete(0, END)
     print "Clear"
     for Valor in usuarios:
-        if int(Valor['porta'])!=int(VarData['porta']):
-            Valor['online']= checkOnlineOne(Valor['ip'],Valor['porta'])
-            VarData['Listbox'].insert(END, Valor['ip'] + ':' + Valor['porta'] + "       status: " + str(Valor['online']))
+        #if int(Valor['porta'])!=int(VarData['porta']):
+        Valor['online']= checkOnlineOne(Valor['ip'],Valor['porta'])
+        VarData['Listbox'].insert(END, Valor['ip'] + ':' + Valor['porta'] + "       status: " + str(Valor['online']))
     VarData['root'].after(10000, checkOnlineALL,usuarios,VarData)

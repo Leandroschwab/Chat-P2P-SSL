@@ -6,10 +6,14 @@ from Controll_functions import *
 def createDB():
     connSQL = sqlite3.connect('Database/user.db')
     cursor = connSQL.cursor()
-    cursor.execute(
+    try:
+        cursor.execute(
         "CREATE TABLE Info (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,variavel TEXT NOT NULL,valor TEXT);")
-    cursor.execute(
+        cursor.execute(
         "CREATE TABLE Users (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,ip TEXT,porta TEXT);")
+        print "banco de dados criado"
+    except Exception as e:
+        print "banco de dados ja existe"
     connSQL.close()
 
 
@@ -44,8 +48,4 @@ def addUsuarioDB(ip,porta):                         #addUsuarioDB("123.456.779.2
     print "addUsuarioDB: finish"
 
 if __name__ == "__main__":
-    usuarios= getUsuariosDB()
-    #print usuarios[1]
-    for valor in usuarios:
-        print valor['ip']
-        #Listbox.insert(END, usuarios[i].valor['ip'] + ':' + usuarios[i].valor['porta'] + '        Status' +                       usuarios[i].valor['online'])
+    createDB()
