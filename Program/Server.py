@@ -13,8 +13,8 @@ def server(s, VarData, usuarios):
         try:
             s.listen(1)  # espera chegar pacotes na porta especificada
             conn, addr = s.accept()  # Aceita uma conexão
-            print "server: Aceitou uma nova conexao"
-            print 'Connected by', addr
+            #print "server: Aceitou uma nova conexao"
+            #print 'Connected by', addr
             t = Thread(target=novaConn, args=(conn, usuarios,VarData))
             t.start()
         except Exception as e:

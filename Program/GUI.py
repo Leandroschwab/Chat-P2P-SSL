@@ -5,6 +5,8 @@ from threading import Thread
 
 from Server import *
 from DB_Funcions import *
+from Controll_functions import *
+
 
 
 def Send(ChatEntry1, ChatText1, Amigo):
@@ -14,7 +16,7 @@ def Send(ChatEntry1, ChatText1, Amigo):
     # Msg.configure(state='enabled')
     ChatText1.insert(INSERT, 'Eu: ' + Var + "\n")
     # Msg.configure(state='disabled')
-    mensagem = "Mensagem-chat-+,+-"+str(VarData['PORT'])+"-+,+-"+Var
+    mensagem = "Mensagem-chat-+,+-"+str(VarData['porta'])+"-+,+-"+Var
 
     connS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
     connS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -129,22 +131,19 @@ def on_closing_chat(id, ChatWindow):  # executa quando fecha a janela do chat
 
     ChatWindow.destroy()
 
-def on_closing_chat(id, ChatWindow):  # executa quando fecha a janela do chat
-    print "on_closing_chat: fechando a janela"
-    usuarios[id]['Janela'] = False  # armazena a informaçao q a janela esta fechada
-
-    ChatWindow.destroy()
 
 if __name__ == "__main__":
 
     global usuarios
     global VarData
     VarData = {}
+    VarData['porta'] = input("digite a porta: ")
 
     root = Tk()
-    root.title('Chat p2p')
+    root.title('Chat p2p '+ str(VarData['porta']) )
     root.geometry('395x424+428+131')
     root.configure(background="#d9d9d9")
+    VarData['root']=root
 
     Header = Frame(root)
     Header.configure(width=125, background="#d9d9d9")
@@ -182,7 +181,7 @@ if __name__ == "__main__":
     Listbox.configure(width='214', yscrollcommand='True')
     Listbox.bind("<Double-Button-1>", OpenChat)
     Listbox.place(relx=0.228, rely=0.058, relheight=0.846, relwidth=0.567)
-
+    VarData['Listbox']=Listbox
     # Frame3 = Frame(root)
     # Frame3.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
     # Frame3.place(relx='0.0', rely='0.773', relheight='0.227', relwidth='1.005')
@@ -197,19 +196,18 @@ if __name__ == "__main__":
     # Chat.place(relx='0.088', rely='0.222', height='70', relwidth='0.655')
 
     usuarios = getUsuariosDB()  # pega todos usuario no banco de dados
-    for valor in usuarios:
-        Listbox.insert(END, valor['ip'] + ':' + valor['porta'] + "       status: " + str(valor['online']))
+    #for valor in usuarios:
+        #Listbox.insert(END, valor['ip'] + ':' + valor['porta'] + "       status: " + str(valor['online']))
 
 
-    VarData['PORT'] = input("digite a porta: ")
     HOST = ''  # Symbolic name meaning all available interfaces
     # Arbitrary non-privileged port
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # IPv4,tipo de socket
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind((HOST, VarData['PORT'] ))  # liga o socket com IP e porta
+    s.bind((HOST, VarData['porta'] ))  # liga o socket com IP e porta
 
     print "iniciando servidor"
     t = Thread(target=server, args=(s,VarData,usuarios))
     t.start()
-
+    checkOnlineALL(usuarios, VarData)
     root.mainloop()

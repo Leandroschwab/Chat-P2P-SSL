@@ -30,7 +30,7 @@ def mensagemChat(usuarios,msgRecA,VarData):
     id = getIDPort(porta,usuarios)
     print id
     try:
-        if (usuarios[id]['Janela']==True ):
+        if (usuarios[id]['Janela']==True ):     # verifica se a janela com o outro usuario ja esta aberta
             usuarios[id]['ChatText'].insert(INSERT, str(porta)+': ' + msgRecA[2] + "\n")
         else:
             print "janela esta fechada "
@@ -40,9 +40,11 @@ def mensagemChat(usuarios,msgRecA,VarData):
 
 def getIDPort(porta,usuarios):
     print "getIDPort: started"
-    for valor in usuarios:
-        if (valor['porta']==porta):
+    i=0
+    for Valor in usuarios:
+        if (Valor['porta']==porta):
             return i
+        i=i+1
     print "Erro Porta==usuario nao encontrado"
     return -1
 
