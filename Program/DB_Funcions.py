@@ -3,8 +3,8 @@ import socket
 import sqlite3
 from Controll_functions import *
 
-def createDB():
-    connSQL = sqlite3.connect('Database/user.db')
+def createDB(VarData):
+    connSQL = sqlite3.connect('Database/'+str(VarData['porta'])+'.db')
     cursor = connSQL.cursor()
     try:
         cursor.execute(
@@ -17,10 +17,10 @@ def createDB():
     connSQL.close()
 
 
-def getUsuariosDB():                                #retorna uma matriz/lista no formato usuario=getUsuariosDB()
+def getUsuariosDB(VarData):                                #retorna uma matriz/lista no formato usuario=getUsuariosDB()
     print "getUsuariosDB: started"                  #pode chamar utilizando usuario[i]['ip'] ou usuario[i]['porta']
     usuarios = []
-    connSQL = sqlite3.connect('Database/user.db')
+    connSQL = sqlite3.connect('Database/'+str(VarData['porta'])+'.db')
     cursor = connSQL.cursor()
     cursor.execute("SELECT * FROM Users;")
     data = cursor.fetchall()
@@ -36,15 +36,16 @@ def getUsuariosDB():                                #retorna uma matriz/lista no
     connSQL.close()
     return usuarios
 
-def addUsuarioDB(ip,porta):                         #addUsuarioDB("123.456.779.231","5050")
+def addUsuarioDB(ip,porta,VarData):                         #addUsuarioDB("123.456.779.231","5050")
     print "addUsuarioDB: started"
-    connSQL = sqlite3.connect('Database/user.db')
+    connSQL = sqlite3.connect('Database/'+str(VarData['porta'])+'.db')
     cursor = connSQL.cursor()
     insert_stmt=(
         "INSERT INTO Users(ip,porta) VALUES ('"+ip+"','"+porta+"')")
     cursor.execute(insert_stmt)
     connSQL.commit()
     connSQL.close()
+
     print "addUsuarioDB: finish"
 
 if __name__ == "__main__":

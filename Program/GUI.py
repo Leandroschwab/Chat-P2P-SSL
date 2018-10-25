@@ -58,10 +58,14 @@ def Add_Friend2():
     Temp = IP_Entry.get()
     Temp2 = PORT_Entry.get()
 
-    addUsuarioDB(Temp, Temp2)  # add Usuario no Banco de dados
+    addUsuarioDB(Temp, Temp2,VarData)  # add Usuario no Banco de dados
 
     print Temp
-    Listbox.insert(END, Temp + '        Status')
+    Valor={}
+    Valor['ip'] =Temp
+    Valor['porta'] =Temp2
+
+    usuarios.append(Valor)
     ADD.destroy()
     return  # n entendi isso
 
@@ -196,10 +200,10 @@ if __name__ == "__main__":
     # Chat.place(relx='0.088', rely='0.222', height='70', relwidth='0.655')
 
 
-    createDB()               #Cria caso nao exista o banco de dados
+    createDB(VarData)               #Cria caso nao exista o banco de dados
 
 
-    usuarios = getUsuariosDB()  # pega todos usuario no banco de dados
+    usuarios = getUsuariosDB(VarData)  # pega todos usuario no banco de dados
     #for valor in usuarios:
         #Listbox.insert(END, valor['ip'] + ':' + valor['porta'] + "       status: " + str(valor['online']))
 
