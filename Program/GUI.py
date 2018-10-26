@@ -6,6 +6,8 @@ from threading import Thread
 from Server import *
 from DB_Funcions import *
 from Controll_functions import *
+from Crypto_Functions import *
+
 
 
 
@@ -201,7 +203,7 @@ if __name__ == "__main__":
 
 
     createDB(VarData)               #Cria caso nao exista o banco de dados
-
+    createMyKeys(VarData)
 
     usuarios = getUsuariosDB(VarData)  # pega todos usuario no banco de dados
     #for valor in usuarios:
