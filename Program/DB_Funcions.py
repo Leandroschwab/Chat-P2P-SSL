@@ -18,7 +18,7 @@ def createDB(VarData):
         cursor.execute(
             "CREATE TABLE Info (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,variavel TEXT NOT NULL,valor TEXT);")
         cursor.execute(
-            "CREATE TABLE Users (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,ip TEXT,porta TEXT);")
+            "CREATE TABLE Users (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,ip TEXT,porta TEXT,AES TEXT);")
         print "banco de dados criado"
     except Exception as e:
         print "banco de dados ja existe"

@@ -2,7 +2,7 @@ import os
 
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
-
+from Crypto import Random
 
 def createMyKeys(VarData):
     if os.path.exists('Data/' + str(VarData['porta']) + '/private.pem'):
@@ -30,14 +30,20 @@ def createMyKeys(VarData):
         pub_file.write("{}".format(public_key.exportKey()))
 
 
+#def createAES(Vardata, userValor,porta):
+
+
 if __name__ == "__main__":
-    ''' print "ok"
- 
-     key = 'mysecretpassword'
-     plaintext = 'secret Message A'
- 
-     encobj = AES.new(key, AES.MODE_ECB)
-     ciphertext = encobj.encrypt(plaintext)
- 
-     # Resulting ciphertext in hex
-     print ciphertext.encode('hex')'''
+    #key = 'mysecretpassword'
+    key = Random.new().read(16)
+    print key.encode('hex')
+
+    plaintext = 'secret Message A'
+
+    AEScipher = AES.new(key, AES.MODE_ECB)
+
+    ciphertext = AEScipher.encrypt(plaintext)
+    #print ciphertext
+    # Resulting ciphertext in hex
+    print ciphertext.encode('hex')
+
