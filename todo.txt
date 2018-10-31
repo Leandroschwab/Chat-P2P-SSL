@@ -1,2 +1,25 @@
-GUI adicionar verificaçao quando abre a janela de chat, para saber se a janela ja esta aberta e nao abrir outra igual;
-SERVIDOR ao receber mensagem verificar se janela esta aberta ou se é necessario abrir uma nova. e enviar a mensagem. 
+!importane:
+limpar codigo
+
+Abrir janela sempre q alguem tentar iniciar um chat
+Informar sua senha publica sempre que requisitado.
+Criar senha simetrica sempre que iniciar uma comunicação com outro usuario
+adicionar automaticamente outra pessoa.
+
+perguntar nome e senha no primeiro login
+
+Separar as listbox com usuario on/Offline
+online pode clicar offline N pode.
+substituir nome na listbox com nome da pessoa 
+mostrar nome/porta/ip na janela 	
+
+Criar nome no banco de dados (so enfeite) 
+
+!nao urgente
+Criptografar dados com uma senha(chaves nomes e DB)
+perguntar nome e senha no primeiro login
+
+
+
+
+
