@@ -60,7 +60,7 @@ def Add_Friend2():
     Temp = IP_Entry.get()
     Temp2 = PORT_Entry.get()
 
-    addUsuarioDB(Temp, Temp2,VarData)  # add Usuario no Banco de dados
+    addUsuarioDB(Temp,Temp2,VarData)  # add Usuario no Banco de dados
 
     print Temp
     Valor={}
@@ -140,41 +140,85 @@ if __name__ == "__main__":
 
     root = Tk()
     root.title('Chat p2p '+ str(VarData['porta']) )
-    root.geometry('395x424+428+131')
+    root.geometry('600x524+368+93')
     root.configure(background="#d9d9d9")
+
     VarData['root']=root
 
     Header = Frame(root)
-    Header.configure(width=125, background="#d9d9d9")
-    Header.place(relheight=0.126, relwidth=1.005)
+    Header.place(relx=0.0, rely=0.0, relheight=0.258, relwidth=1.008)
+    Header.configure(background="#d9d9d9", width=605)
 
-    Nome = Label(Header)
-    Nome.configure(anchor=W, background="#d9d9d9", text=VarData['nome'])
-    Nome.place(relx=0.013, rely=0.100, height=51, width=150)
+    Nome_Label = Label(Header)
+    Nome_Label.place(relx=0.0, rely=0.0, height=51, width=604)
+    Nome_Label.configure(background="#d9d9d9", text=VarData['nome'], width=604)
 
-    Convidar = Button(Header)
-    Convidar.configure(background="#d9d9d9", text='Adicionar', command=Add_Friend)
-    Convidar.place(relx=0.785, rely=0.175, height=30, width=77)
+    IP = Label(Header)
+    IP.place(relx=0.182, rely=0.444, height=31, width=194)
+    IP.configure(justify=LEFT,anchor=W,background="#d9d9d9", text=socket.gethostbyname(socket.gethostname()), width=194)
 
-    Label_IP = Label(Header)
-    Label_Port = Label(Header)
-    Label_IP.configure(background="#d9d9d9", text=socket.gethostbyname(socket.gethostname()))
-    Label_Port.configure(background="#d9d9d9", text=VarData['porta'])
-    Label_IP.place(relx=0.582, rely=0.118, height=21, width=34)
-    Label_Port.place(relx=0.582, rely=0.471, height=21, width=34)
+    Porta = Label(Header)
+    Porta.place(relx=0.182, rely=0.741, height=31, width=74)
+    Porta.configure(background="#d9d9d9", text=VarData['porta'], width=74)
 
-    Body = Frame(root)
-    Body.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
-    Body.place(relx=0.0, rely=0.189, relheight=0.814, relwidth=1.005)
+    Adicionar_Amigo = Button(Header)
+    Adicionar_Amigo.place(relx=0.562, rely=0.444, height=64, width=177)
+    Adicionar_Amigo.configure(background="#d9d9d9", text='Adicionar Amigo',command=Add_Friend, width=177)
 
+    IP_Label = Label(Header)
+    IP_Label.place(relx=0.0, rely=0.444, height=31, width=104)
+    IP_Label.configure(background="#d9d9d9", text='Ip:', width=104)
 
-    Listbox = Listbox(Body)
-    Listbox.configure(width='214', yscrollcommand='True')
-    Listbox.bind("<Double-Button-1>", OpenChat)
-    Listbox.place(relx=0.228, rely=0.058, relheight=0.846, relwidth=0.567)
-    VarData['Listbox']=Listbox
+    Porta_Label = Label(Header)
+    Porta_Label.place(relx=0.0, rely=0.741, height=31, width=104)
+    Porta_Label.configure(background="#d9d9d9", text='Porta:', width=104)
 
+    Listbox_online = Listbox(root)
+    Listbox_online.place(relx=0.083, rely=0.363, relheight=0.576, relwidth=0.34)
+    Listbox_online.bind("<Double-Button-1>", OpenChat)
+    Listbox_online.configure(background="white", font="TkFixedFont", width=204)
 
+    Listbox_offline = Listbox(root)
+    Listbox_offline.place(relx=0.6, rely=0.363, relheight=0.576, relwidth=0.34)
+    Listbox_offline.configure(background="white", font="TkFixedFont", width=204)
+
+    Online = Label(root)
+    Online.place(relx=0.083, rely=0.267, height=41, width=204)
+    Online.configure(background="#d9d9d9", text='Online', width=204)
+
+    Offline = Label(root)
+    Offline.place(relx=0.65, rely=0.267, height=31, width=134)
+    Offline.configure(background="#d9d9d9", text='Offline', width=134)
+
+    #Header = Frame(root)
+    #Header.configure(width=125, background="#d9d9d9")
+    #Header.place(relheight=0.126, relwidth=1.005)
+
+    #Nome = Label(Header)
+    #Nome.configure(anchor=W, background="#d9d9d9", text=VarData['nome'])
+    #Nome.place(relx=0.013, rely=0.100, height=51, width=150)
+
+    #Convidar = Button(Header)
+    #Convidar.configure(background="#d9d9d9", text='Adicionar', command=Add_Friend)
+    #Convidar.place(relx=0.785, rely=0.175, height=30, width=77)
+
+    #Label_IP = Label(Header)
+    #Label_Port = Label(Header)
+    #Label_IP.configure(background="#d9d9d9", text=socket.gethostbyname(socket.gethostname()))
+    #Label_Port.configure(background="#d9d9d9", text=VarData['porta'])
+    #Label_IP.place(relx=0.582, rely=0.118, height=21, width=34)
+    #Label_Port.place(relx=0.582, rely=0.471, height=21, width=34)
+
+    #Body = Frame(root)
+    #Body.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
+    #Body.place(relx=0.0, rely=0.189, relheight=0.814, relwidth=1.005)
+
+    #Listbox = Listbox(Body)
+    #Listbox.configure(width='214', yscrollcommand='True')
+    #Listbox.bind("<Double-Button-1>", OpenChat)
+    #Listbox.place(relx=0.228, rely=0.058, relheight=0.846, relwidth=0.567)
+
+    VarData['Listbox']=Listbox_online # MODIFIQUEI PRO ONLINE MAS NÃO SEI
 
     createDB(VarData)               #Cria caso nao exista o banco de dados
     createMyKeys(VarData)
@@ -193,5 +237,5 @@ if __name__ == "__main__":
     print "iniciando servidor"
     t = Thread(target=server, args=(s,VarData,usuarios))
     t.start()
-    checkOnlineALL(usuarios, VarData)
+    #checkOnlineALL(usuarios, VarData)
     root.mainloop()
