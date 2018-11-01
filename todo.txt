@@ -10,8 +10,8 @@ perguntar nome e senha no primeiro login
 
 Separar as listbox com usuario on/Offline
 online pode clicar offline N pode.
-substituir nome na listbox com nome da pessoa 
-mostrar nome/porta/ip na janela 	
+substituir nome na listbox com nome da pessoa -- feito
+mostrar nome/porta/ip na janela 	-- feito
 
 Criar nome no banco de dados (so enfeite) 
 

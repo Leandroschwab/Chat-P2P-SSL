@@ -93,14 +93,6 @@ def newWindow(Amigo, id):
     ChatFrame1.place(relx=0.0, rely=0.0, relheight=0.148, relwidth=1.002)
     ChatFrame1.configure(relief=GROOVE, background="#d9d9d9", width=530)
 
-    # ChatFrame4 = Frame(ChatWindow)
-    # ChatFrame4.place(relx=0.019, rely=0.182, relheight=0.636, relwidth=0.557)
-    # ChatFrame4.configure(relief=GROOVE,background="#d9d9d9",width=295)
-
-    # ChatFrame5 = Frame(ChatWindow)
-    # ChatFrame5.place(relx=0.66, rely=0.0, relheight=0.818, relwidth=0.311)
-    # ChatFrame5.configure(relief=GROOVE,background="#d9d9d9",width=165)
-
     ChatFrame2 = Frame(ChatWindow)
     ChatFrame2.place(relx=0.0, rely=0.134, relheight=0.659, relwidth=1.002)
     ChatFrame2.configure(relief=GROOVE, background="#d9d9d9", width=530)
@@ -143,6 +135,7 @@ if __name__ == "__main__":
     global usuarios
     global VarData
     VarData = {}
+    VarData['nome'] = raw_input("digite a nome: ")
     VarData['porta'] = input("digite a porta: ")
 
     root = Tk()
@@ -156,7 +149,7 @@ if __name__ == "__main__":
     Header.place(relheight=0.126, relwidth=1.005)
 
     Nome = Label(Header)
-    Nome.configure(anchor=W, background="#d9d9d9", text='Andre Felipe Tavares')
+    Nome.configure(anchor=W, background="#d9d9d9", text=VarData['nome'])
     Nome.place(relx=0.013, rely=0.100, height=51, width=150)
 
     Convidar = Button(Header)
@@ -165,8 +158,8 @@ if __name__ == "__main__":
 
     Label_IP = Label(Header)
     Label_Port = Label(Header)
-    Label_IP.configure(background="#d9d9d9", text='Ip')
-    Label_Port.configure(background="#d9d9d9", text='Porta')
+    Label_IP.configure(background="#d9d9d9", text=socket.gethostbyname(socket.gethostname()))
+    Label_Port.configure(background="#d9d9d9", text=VarData['porta'])
     Label_IP.place(relx=0.582, rely=0.118, height=21, width=34)
     Label_Port.place(relx=0.582, rely=0.471, height=21, width=34)
 
@@ -174,32 +167,13 @@ if __name__ == "__main__":
     Body.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
     Body.place(relx=0.0, rely=0.189, relheight=0.814, relwidth=1.005)
 
-    # TSeparator1 = ttk.Separator(Body)
-    # TSeparator1.configure(orient="vertical")
-    # TSeparator1.place(relx=0.656, rely=-0.013, relheight=1.013)
-
-    # Msg = Text(Body)
-    # Msg.configure(width='10', xscrollcommand='True')
-    # Msg.insert(END, 'Teste \n')
-    # Msg.place(relx='0.088', rely='0.076', relheight='0.889', relwidth='0.489')
 
     Listbox = Listbox(Body)
     Listbox.configure(width='214', yscrollcommand='True')
     Listbox.bind("<Double-Button-1>", OpenChat)
     Listbox.place(relx=0.228, rely=0.058, relheight=0.846, relwidth=0.567)
     VarData['Listbox']=Listbox
-    # Frame3 = Frame(root)
-    # Frame3.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
-    # Frame3.place(relx='0.0', rely='0.773', relheight='0.227', relwidth='1.005')
 
-    # Button_Send = Button(Frame3)
-    # Button_Send.configure(background="#d9d9d9", text='Send')
-    # Button_Send.configure(command=Send)
-    # Button_Send.place(relx='0.788', rely='0.148', height='84', width='127')
-
-    # Chat = Text(Frame3)
-    # Chat.configure(borderwidth="2", font='Helvetica 14')
-    # Chat.place(relx='0.088', rely='0.222', height='70', relwidth='0.655')
 
 
     createDB(VarData)               #Cria caso nao exista o banco de dados
