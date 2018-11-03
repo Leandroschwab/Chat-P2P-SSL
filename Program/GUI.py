@@ -182,6 +182,10 @@ if __name__ == "__main__":
     Listbox_offline.place(relx=0.6, rely=0.363, relheight=0.576, relwidth=0.34)
     Listbox_offline.configure(background="white", font="TkFixedFont", width=204)
 
+    VarData['ListboxOnline']=Listbox_online
+    VarData['ListboxOffline']=Listbox_offline
+
+
     Online = Label(root)
     Online.place(relx=0.083, rely=0.267, height=41, width=204)
     Online.configure(background="#d9d9d9", text='Online', width=204)
@@ -190,46 +194,12 @@ if __name__ == "__main__":
     Offline.place(relx=0.65, rely=0.267, height=31, width=134)
     Offline.configure(background="#d9d9d9", text='Offline', width=134)
 
-    #Header = Frame(root)
-    #Header.configure(width=125, background="#d9d9d9")
-    #Header.place(relheight=0.126, relwidth=1.005)
-
-    #Nome = Label(Header)
-    #Nome.configure(anchor=W, background="#d9d9d9", text=VarData['nome'])
-    #Nome.place(relx=0.013, rely=0.100, height=51, width=150)
-
-    #Convidar = Button(Header)
-    #Convidar.configure(background="#d9d9d9", text='Adicionar', command=Add_Friend)
-    #Convidar.place(relx=0.785, rely=0.175, height=30, width=77)
-
-    #Label_IP = Label(Header)
-    #Label_Port = Label(Header)
-    #Label_IP.configure(background="#d9d9d9", text=socket.gethostbyname(socket.gethostname()))
-    #Label_Port.configure(background="#d9d9d9", text=VarData['porta'])
-    #Label_IP.place(relx=0.582, rely=0.118, height=21, width=34)
-    #Label_Port.place(relx=0.582, rely=0.471, height=21, width=34)
-
-    #Body = Frame(root)
-    #Body.configure(relief=GROOVE, borderwidth="2", background="#d9d9d9", width='800')
-    #Body.place(relx=0.0, rely=0.189, relheight=0.814, relwidth=1.005)
-
-    #Listbox = Listbox(Body)
-    #Listbox.configure(width='214', yscrollcommand='True')
-    #Listbox.bind("<Double-Button-1>", OpenChat)
-    #Listbox.place(relx=0.228, rely=0.058, relheight=0.846, relwidth=0.567)
-
-    VarData['Listbox']=Listbox_online # MODIFIQUEI PRO ONLINE MAS NÃO SEI
-
     createDB(VarData)               #Cria caso nao exista o banco de dados
-    createMyKeys(VarData)
+    createMyKeys(VarData)           #
 
     usuarios = getUsuariosDB(VarData)  # pega todos usuario no banco de dados
-    #for valor in usuarios:
-        #Listbox.insert(END, valor['ip'] + ':' + valor['porta'] + "       status: " + str(valor['online']))
-
 
     HOST = ''  # Symbolic name meaning all available interfaces
-    # Arbitrary non-privileged port
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # IPv4,tipo de socket
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((HOST, VarData['porta'] ))  # liga o socket com IP e porta
@@ -237,5 +207,5 @@ if __name__ == "__main__":
     print "iniciando servidor"
     t = Thread(target=server, args=(s,VarData,usuarios))
     t.start()
-    #checkOnlineALL(usuarios, VarData)
+    checkOnlineALL(usuarios, VarData)
     root.mainloop()

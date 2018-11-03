@@ -1,5 +1,5 @@
 !importane:
-limpar codigo
+feito-limpar codigo
 
 Abrir janela sempre q alguem tentar iniciar um chat
 Informar sua senha publica sempre que requisitado.
@@ -19,7 +19,8 @@ Criar nome no banco de dados (so enfeite)
 Criptografar dados com uma senha(chaves nomes e DB)
 perguntar nome e senha no primeiro login
 
-
+!bugs
+Variavel global quando add amigo, pode causar erro caso o usuario abra duas janelas para add amigo
 
 
 
