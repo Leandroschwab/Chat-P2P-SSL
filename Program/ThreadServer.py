@@ -3,7 +3,8 @@ from Tkinter import *
 
 import traceback
 
-def novaConn(conn,usuarios,VarData):
+
+def novaConn(conn, usuarios, VarData):
     while 1:
         try:
             data = conn.recv(1024)  # Recebe os dados
@@ -14,8 +15,8 @@ def novaConn(conn,usuarios,VarData):
                 msgRecA = linha.split("-+,+-")
                 print "Servidou recebeu linha: " + str(linha)
 
-                if (msgRecA[0]=="Mensagem-chat"):
-                    mensagemChat(usuarios,msgRecA,VarData)
+                if (msgRecA[0] == "Mensagem-chat"):
+                    mensagemChat(usuarios, msgRecA, VarData)
 
         except Exception as e:
             print('Um erro ocorreu!')
@@ -24,27 +25,44 @@ def novaConn(conn,usuarios,VarData):
             break
     conn.close()
 
-def mensagemChat(usuarios,msgRecA,VarData):
+
+def mensagemChat(usuarios, msgRecA, VarData):
     print "mensagemChat: started"
     porta = msgRecA[1]
-    id = getIDPort(porta,usuarios)
+    id = getIDPort(porta, usuarios)
     print id
+    status = True
+    while status:
+        print "mensagemChat: Lock"
+        VarData['mutex'].acquire()
+        if VarData['Openboolean']:
+            VarData['Openboolean']= False
+            break
+        else:
+            print "mensagemChat: Unlock"
+            VarData['mutex'].release()
+
     try:
-        if (usuarios[id]['Janela']==True ):     # verifica se a janela com o outro usuario ja esta aberta
-            usuarios[id]['ChatText'].insert(INSERT, str(porta)+': ' + msgRecA[2] + "\n")
+        if (usuarios[id]['Janela'] == True):  # verifica se a janela com o outro usuario ja esta aberta
+            usuarios[id]['ChatText'].insert(INSERT, str(porta) + ': ' + msgRecA[2] + "\n")
         else:
             print "janela esta fechada "
+            VarData['openChat'] = str(id) + "$+$" + msgRecA[2]
+
     except Exception as e:
         print "janela esta fechada "
 
+        VarData['openChat'] = str(id) + "$+$" + msgRecA[2]
+    print "mensagemChat:Unlock"
+    VarData['mutex'].release()
 
-def getIDPort(porta,usuarios):
+
+def getIDPort(porta, usuarios):
     print "getIDPort: started"
-    i=0
+    i = 0
     for Valor in usuarios:
-        if (Valor['porta']==porta):
+        if (Valor['porta'] == porta):
             return i
-        i=i+1
+        i = i + 1
     print "Erro Porta==usuario nao encontrado"
     return -1
-

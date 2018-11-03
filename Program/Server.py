@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import socket
 from ThreadServer import *
-from threading import Thread, Lock, BoundedSemaphore, Semaphore
+from threading import Thread
 
 
 def server(s, VarData, usuarios):

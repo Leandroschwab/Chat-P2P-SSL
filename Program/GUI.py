@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
+import time
 from Tkinter import *
 import ttk
-from threading import Thread
 
+from threading import Semaphore
 from Server import *
 from DB_Funcions import *
 from Controll_functions import *
 from Crypto_Functions import *
-
-
 
 
 def Send(ChatEntry1, ChatText1, Amigo):
@@ -18,7 +17,7 @@ def Send(ChatEntry1, ChatText1, Amigo):
     # Msg.configure(state='enabled')
     ChatText1.insert(INSERT, 'Eu: ' + Var + "\n")
     # Msg.configure(state='disabled')
-    mensagem = "Mensagem-chat-+,+-"+str(VarData['porta'])+"-+,+-"+Var
+    mensagem = "Mensagem-chat-+,+-" + str(VarData['porta']) + "-+,+-" + Var
 
     connS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
     connS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -60,12 +59,12 @@ def Add_Friend2():
     Temp = IP_Entry.get()
     Temp2 = PORT_Entry.get()
 
-    addUsuarioDB(Temp,Temp2,VarData)  # add Usuario no Banco de dados
+    addUsuarioDB(Temp, Temp2, VarData)  # add Usuario no Banco de dados
 
     print Temp
-    Valor={}
-    Valor['ip'] =Temp
-    Valor['porta'] =Temp2
+    Valor = {}
+    Valor['ip'] = Temp
+    Valor['porta'] = Temp2
 
     usuarios.append(Valor)
     ADD.destroy()
@@ -123,6 +122,72 @@ def newWindow(Amigo, id):
     return
 
 
+def newWindow2(Amigo, id, mensagem):
+    print "newWindow: Started"
+    ChatWindow = Toplevel()
+    ChatWindow.geometry("529x372+325+131")
+    ChatWindow.title("Chat Window " + str(Amigo['ip']) + ":" + Amigo['porta'])
+    ChatWindow.configure(background="#d9d9d9")
+
+    ChatFrame1 = Frame(ChatWindow)
+    ChatFrame1.place(relx=0.0, rely=0.0, relheight=0.148, relwidth=1.002)
+    ChatFrame1.configure(relief=GROOVE, background="#d9d9d9", width=530)
+
+    ChatFrame2 = Frame(ChatWindow)
+    ChatFrame2.place(relx=0.0, rely=0.134, relheight=0.659, relwidth=1.002)
+    ChatFrame2.configure(relief=GROOVE, background="#d9d9d9", width=530)
+
+    ChatText1 = Text(ChatFrame2)
+    ChatText1.place(relx=0.019, rely=0.082, relheight=0.873, relwidth=0.951)
+    ChatText1.configure(width=504)
+
+    ChatFrame3 = Frame(ChatWindow)
+    ChatFrame3.place(relx=0.0, rely=0.78, relheight=0.228, relwidth=1.002)
+    ChatFrame3.configure(relief=GROOVE, background="#d9d9d9", width=525)
+
+    ChatEntry1 = Entry(ChatFrame3)
+    ChatEntry1.place(relx=0.019, rely=0.118, height=60, relwidth=0.668)
+    ChatEntry1.configure(width=354)
+
+    ChatButton1 = Button(ChatFrame3)
+    ChatButton1.place(relx=0.774, rely=0.235, height=44, width=87)
+    ChatButton1.configure(background="#d9d9d9", text='Enviar', width=87)
+    ChatButton1.configure(command=lambda *args: Send(ChatEntry1, ChatText1, Amigo))
+
+    usuarios[id]['Janela'] = True  # armazena a informaçao q a janela esta aberta
+    usuarios[id]['ChatText'] = ChatText1  # armazena a informaçao do local da janela,
+    ChatText1.insert(INSERT, Amigo['porta'] + ': ' + mensagem + "\n")
+
+    # para ser usado pelo servidor escrever na janela
+    ChatWindow.protocol("WM_DELETE_WINDOW",
+                        lambda: on_closing_chat(id, ChatWindow))  # executa o comando avisando q a janela fechou
+
+    ChatWindow.mainloop()
+
+    return
+
+
+def openNewChat(usuarios, VarData):
+    print "openNewChat: iniciado"
+    print "openNewChat: Lock"
+    VarData['mutex'].acquire()
+    if (VarData['openChat'] != ""):
+        data = VarData['openChat'].split("$+$")
+        id = int(data[0])
+
+        print "janela estava fechada "
+
+        print "openNewChat: UnLock"
+        VarData['mutex'].release()
+        VarData['openChat'] = ""
+        VarData['Openboolean'] = True
+        VarData['root'].after(1000, openNewChat, usuarios, VarData)
+        newWindow2(usuarios[id], id, data[1])
+    print "openNewChat: UnLock"
+    VarData['mutex'].release()
+    VarData['root'].after(1000, openNewChat, usuarios, VarData)
+
+
 def on_closing_chat(id, ChatWindow):  # executa quando fecha a janela do chat
     print "on_closing_chat: fechando a janela"
     usuarios[id]['Janela'] = False  # armazena a informaçao q a janela esta fechada
@@ -131,19 +196,21 @@ def on_closing_chat(id, ChatWindow):  # executa quando fecha a janela do chat
 
 
 if __name__ == "__main__":
-
     global usuarios
     global VarData
     VarData = {}
-    VarData['nome'] = raw_input("digite a nome: ")
+    VarData['nome'] = "nome"  # raw_input("digite a nome: ")
     VarData['porta'] = input("digite a porta: ")
+    VarData['mutex'] = Semaphore()
+    VarData['openChat'] = ""
+    VarData['Openboolean'] = False
 
     root = Tk()
-    root.title('Chat p2p '+ str(VarData['porta']) )
+    root.title('Chat p2p ' + str(VarData['porta']))
     root.geometry('600x524+368+93')
     root.configure(background="#d9d9d9")
 
-    VarData['root']=root
+    VarData['root'] = root
 
     Header = Frame(root)
     Header.place(relx=0.0, rely=0.0, relheight=0.258, relwidth=1.008)
@@ -155,7 +222,8 @@ if __name__ == "__main__":
 
     IP = Label(Header)
     IP.place(relx=0.182, rely=0.444, height=31, width=194)
-    IP.configure(justify=LEFT,anchor=W,background="#d9d9d9", text=socket.gethostbyname(socket.gethostname()), width=194)
+    IP.configure(justify=LEFT, anchor=W, background="#d9d9d9", text=socket.gethostbyname(socket.gethostname()),
+                 width=194)
 
     Porta = Label(Header)
     Porta.place(relx=0.182, rely=0.741, height=31, width=74)
@@ -163,7 +231,7 @@ if __name__ == "__main__":
 
     Adicionar_Amigo = Button(Header)
     Adicionar_Amigo.place(relx=0.562, rely=0.444, height=64, width=177)
-    Adicionar_Amigo.configure(background="#d9d9d9", text='Adicionar Amigo',command=Add_Friend, width=177)
+    Adicionar_Amigo.configure(background="#d9d9d9", text='Adicionar Amigo', command=Add_Friend, width=177)
 
     IP_Label = Label(Header)
     IP_Label.place(relx=0.0, rely=0.444, height=31, width=104)
@@ -182,9 +250,8 @@ if __name__ == "__main__":
     Listbox_offline.place(relx=0.6, rely=0.363, relheight=0.576, relwidth=0.34)
     Listbox_offline.configure(background="white", font="TkFixedFont", width=204)
 
-    VarData['ListboxOnline']=Listbox_online
-    VarData['ListboxOffline']=Listbox_offline
-
+    VarData['ListboxOnline'] = Listbox_online
+    VarData['ListboxOffline'] = Listbox_offline
 
     Online = Label(root)
     Online.place(relx=0.083, rely=0.267, height=41, width=204)
@@ -194,18 +261,20 @@ if __name__ == "__main__":
     Offline.place(relx=0.65, rely=0.267, height=31, width=134)
     Offline.configure(background="#d9d9d9", text='Offline', width=134)
 
-    createDB(VarData)               #Cria caso nao exista o banco de dados
-    createMyKeys(VarData)           #
+    createDB(VarData)  # Cria caso nao exista o banco de dados
+    createMyKeys(VarData)  #
 
     usuarios = getUsuariosDB(VarData)  # pega todos usuario no banco de dados
 
     HOST = ''  # Symbolic name meaning all available interfaces
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # IPv4,tipo de socket
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind((HOST, VarData['porta'] ))  # liga o socket com IP e porta
+    s.bind((HOST, VarData['porta']))  # liga o socket com IP e porta
 
     print "iniciando servidor"
-    t = Thread(target=server, args=(s,VarData,usuarios))
+    t = Thread(target=server, args=(s, VarData, usuarios))
     t.start()
     checkOnlineALL(usuarios, VarData)
+    openNewChat(usuarios, VarData)
+
     root.mainloop()

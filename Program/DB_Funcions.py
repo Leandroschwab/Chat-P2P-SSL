@@ -59,4 +59,7 @@ def addUsuarioDB(ip, porta, VarData):  # addUsuarioDB("123.456.779.231","5050")
 
 
 if __name__ == "__main__":
-    createDB()
+    line= "0$*$oi"
+    data= line.split("$*$")
+    base = int(data[0])
+    print base

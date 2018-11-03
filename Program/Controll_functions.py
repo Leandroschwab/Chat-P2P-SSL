@@ -2,7 +2,8 @@
 from Tkinter import *
 import socket
 
-def checkOnlineOne(ip,porta):
+
+def checkOnlineOne(ip, porta):
     try:
         conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
         conn.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -11,16 +12,26 @@ def checkOnlineOne(ip,porta):
 
         return True
     except Exception as e:
-        #print('Usuario Offline ' + ip + ':' + porta)
-        #print e
+        # print('Usuario Offline ' + ip + ':' + porta)
+        # print e
         return False
 
-def checkOnlineALL(usuarios,VarData):
+
+def checkOnlineALL(usuarios, VarData):
     print "checando usuarios"
-    VarData['Listbox'].delete(0, END)
-    print "Clear"
+    VarData['ListboxOnline'].delete(0, END)
+    VarData['ListboxOffline'].delete(0, END)
     for Valor in usuarios:
-        #if int(Valor['porta'])!=int(VarData['porta']):
-        Valor['online']= checkOnlineOne(Valor['ip'],Valor['porta'])
-        VarData['Listbox'].insert(END, Valor['ip'] + ':' + Valor['porta'] + "       status: " + str(Valor['online']))
-    VarData['root'].after(10000, checkOnlineALL,usuarios,VarData)
+        # if int(Valor['porta'])!=int(VarData['porta']):
+        Valor['online'] = checkOnlineOne(Valor['ip'], Valor['porta'])
+        if Valor['online']:
+            VarData['ListboxOnline'].insert(END,
+                                            Valor['ip'] + ':' + Valor['porta'])
+        else:
+            VarData['ListboxOffline'].insert(END,
+                                             Valor['ip'] + ':' + Valor['porta'])
+    VarData['root'].after(10000, checkOnlineALL, usuarios, VarData)
+
+
+
+
