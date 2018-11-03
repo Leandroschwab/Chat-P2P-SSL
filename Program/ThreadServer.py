@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 from Tkinter import *
 
 import traceback
@@ -30,32 +31,17 @@ def mensagemChat(usuarios, msgRecA, VarData):
     print "mensagemChat: started"
     porta = msgRecA[1]
     id = getIDPort(porta, usuarios)
-    print id
-    status = True
-    while status:
-        print "mensagemChat: Lock"
-        VarData['mutex'].acquire()
-        if VarData['Openboolean']:
-            VarData['Openboolean']= False
-            break
-        else:
-            print "mensagemChat: Unlock"
-            VarData['mutex'].release()
-
     try:
         if (usuarios[id]['Janela'] == True):  # verifica se a janela com o outro usuario ja esta aberta
+            
             usuarios[id]['ChatText'].insert(INSERT, str(porta) + ': ' + msgRecA[2] + "\n")
         else:
-            print "janela esta fechada "
+            print "else: janela esta fechada "
             VarData['openChat'] = str(id) + "$+$" + msgRecA[2]
 
     except Exception as e:
-        print "janela esta fechada "
-
+        print "Exception : janela esta fechada  "
         VarData['openChat'] = str(id) + "$+$" + msgRecA[2]
-    print "mensagemChat:Unlock"
-    VarData['mutex'].release()
-
 
 def getIDPort(porta, usuarios):
     print "getIDPort: started"

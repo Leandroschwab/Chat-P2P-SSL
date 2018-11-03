@@ -168,24 +168,20 @@ def newWindow2(Amigo, id, mensagem):
 
 
 def openNewChat(usuarios, VarData):
-    print "openNewChat: iniciado"
-    print "openNewChat: Lock"
-    VarData['mutex'].acquire()
+    #print "openNewChat: iniciado"
+    #print "openNewChat: Lock"
     if (VarData['openChat'] != ""):
         data = VarData['openChat'].split("$+$")
         id = int(data[0])
-
-        print "janela estava fechada "
-
-        print "openNewChat: UnLock"
-        VarData['mutex'].release()
+        mensagem = data[1]
+        #print "openNewChat: UnLock"
         VarData['openChat'] = ""
         VarData['Openboolean'] = True
-        VarData['root'].after(1000, openNewChat, usuarios, VarData)
-        newWindow2(usuarios[id], id, data[1])
-    print "openNewChat: UnLock"
-    VarData['mutex'].release()
-    VarData['root'].after(1000, openNewChat, usuarios, VarData)
+        VarData['root'].after(50, openNewChat, usuarios, VarData)
+        newWindow2(usuarios[id], id, mensagem)
+
+    #print "openNewChat: UnLock"
+    VarData['root'].after(50, openNewChat, usuarios, VarData)
 
 
 def on_closing_chat(id, ChatWindow):  # executa quando fecha a janela do chat
@@ -203,7 +199,7 @@ if __name__ == "__main__":
     VarData['porta'] = input("digite a porta: ")
     VarData['mutex'] = Semaphore()
     VarData['openChat'] = ""
-    VarData['Openboolean'] = False
+    VarData['Openboolean'] = True
 
     root = Tk()
     root.title('Chat p2p ' + str(VarData['porta']))
