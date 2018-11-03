@@ -1,7 +1,7 @@
-!importane:
-feito-limpar codigo
+﻿!importane:
++- -limpar codigo
 
-Abrir janela sempre q alguem tentar iniciar um chat
+Abrir janela sempre q alguem tentar iniciar um chat --feito
 Informar sua senha publica sempre que requisitado.
 Criar senha simetrica sempre que iniciar uma comunicação com outro usuario
 adicionar automaticamente outra pessoa.

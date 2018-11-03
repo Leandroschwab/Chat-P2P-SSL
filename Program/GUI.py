@@ -17,7 +17,7 @@ def Send(ChatEntry1, ChatText1, Amigo):
     # Msg.configure(state='enabled')
     ChatText1.insert(INSERT, 'Eu: ' + Var + "\n")
     # Msg.configure(state='disabled')
-    mensagem = "Mensagem-chat-+,+-" + str(VarData['porta']) + "-+,+-" + Var
+    mensagem = "Mensagem-chat-+,+-" + str(VarData['porta']) + "-+,+-" + Var + "-+;+-"
 
     connS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
     connS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -168,19 +168,19 @@ def newWindow2(Amigo, id, mensagem):
 
 
 def openNewChat(usuarios, VarData):
-    #print "openNewChat: iniciado"
-    #print "openNewChat: Lock"
+    # print "openNewChat: iniciado"
+    # print "openNewChat: Lock"
     if (VarData['openChat'] != ""):
         data = VarData['openChat'].split("$+$")
         id = int(data[0])
         mensagem = data[1]
-        #print "openNewChat: UnLock"
+        # print "openNewChat: UnLock"
         VarData['openChat'] = ""
         VarData['Openboolean'] = True
         VarData['root'].after(50, openNewChat, usuarios, VarData)
         newWindow2(usuarios[id], id, mensagem)
 
-    #print "openNewChat: UnLock"
+    # print "openNewChat: UnLock"
     VarData['root'].after(50, openNewChat, usuarios, VarData)
 
 
@@ -270,6 +270,7 @@ if __name__ == "__main__":
     print "iniciando servidor"
     t = Thread(target=server, args=(s, VarData, usuarios))
     t.start()
+    VarData['ip'] = socket.gethostbyname(socket.gethostname())
     checkOnlineALL(usuarios, VarData)
     openNewChat(usuarios, VarData)
 

@@ -7,7 +7,7 @@ from Controll_functions import *
 
 def createDB(VarData):
     try:
-        os.mkdir('Data/'+str(VarData['porta']))
+        os.mkdir('Data/' + str(VarData['porta']))
         print "pasta do usuario Criado"
     except Exception as e:
         print "pasta do usuario ja existe"
@@ -38,7 +38,7 @@ def getUsuariosDB(VarData):  # retorna uma matriz/lista no formato usuario=getUs
             Valor = {}
             Valor['ip'] = str(linha[1])
             Valor['porta'] = str(linha[2])
-            Valor['online'] = checkOnlineOne(str(linha[1]), str(linha[2]))
+            Valor['online'] = checkOnlineOne(str(linha[1]), str(linha[2]), VarData)
             usuarios.append(Valor)
             i = i + 1
     connSQL.close()
@@ -59,7 +59,5 @@ def addUsuarioDB(ip, porta, VarData):  # addUsuarioDB("123.456.779.231","5050")
 
 
 if __name__ == "__main__":
-    line= "0$*$oi"
-    data= line.split("$*$")
-    base = int(data[0])
-    print base
+    pub_file = open("Data/55555/public.pem", "r")
+    print pub_file.read()

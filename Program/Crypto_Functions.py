@@ -23,7 +23,7 @@ def createMyKeys(VarData):
 
         VarData['myprivatekey'] = private_key
         VarData['mypublickey'] = public_key
-
+        print VarData['mypublickey']
         prv_file = open('Data/' + str(VarData['porta']) + "/private.pem", "w")
         prv_file.write("{}".format(private_key.exportKey()))
         pub_file = open('Data/' + str(VarData['porta']) + "/public.pem", "w")
