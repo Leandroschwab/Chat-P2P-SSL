@@ -58,6 +58,6 @@ def addUsuarioDB(ip, porta, VarData):  # addUsuarioDB("123.456.779.231","5050")
     print "addUsuarioDB: finish"
 
 
-#if __name__ == "__main__":
-
-
+if __name__ == "__main__":
+    pub_file = open("Data/55555/public.pem", "r")
+    print pub_file.read()

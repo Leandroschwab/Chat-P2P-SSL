@@ -13,23 +13,11 @@ from Crypto_Functions import *
 def Send(ChatEntry1, ChatText1, Amigo):
     print "Send: Started"
     Var = ChatEntry1.get()
-    size = len(Var)
-    zeros = (16 - size % 16)
-    for i in range(zeros):
-        Var += " "
-
     ChatEntry1.delete(0, END)
     # Msg.configure(state='enabled')
     ChatText1.insert(INSERT, 'Eu: ' + Var + "\n")
     # Msg.configure(state='disabled')
-
-    session_key = Amigo['ChatAESKey']  # encryptacao
-
-    cipher_aes = AES.new(session_key, AES.MODE_ECB)
-    ciphertext = cipher_aes.encrypt(Var)
-
-    print "ciphertext " + ciphertext
-    mensagem = "Mensagem-chat-+,+-" + str(VarData['porta']) + "-+,+-" + ciphertext + "-+;+-"
+    mensagem = "Mensagem-chat-+,+-" + str(VarData['porta']) + "-+,+-" + Var + "-+;+-"
 
     connS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
     connS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -128,7 +116,7 @@ def newWindow(Amigo, id):
     ChatButton1.place(relx=0.774, rely=0.235, height=44, width=87)
     ChatButton1.configure(background="#d9d9d9", text='Enviar', width=87)
     ChatButton1.configure(command=lambda *args: Send(ChatEntry1, ChatText1, Amigo))
-    createSession_key(VarData, Amigo)
+
     usuarios[id]['Janela'] = True  # armazena a informaçao q a janela esta aberta
     usuarios[id]['ChatText'] = ChatText1  # armazena a informaçao do local da janela,
     # para ser usado pelo servidor escrever na janela
@@ -211,7 +199,7 @@ if __name__ == "__main__":
     global usuarios
     global VarData
     VarData = {}
-    VarData['nome'] = raw_input("digite a nome: ")
+    VarData['nome'] = "nome"  # raw_input("digite a nome: ")
     VarData['porta'] = input("digite a porta: ")
     VarData['mutex'] = Semaphore()
     VarData['openChat'] = ""

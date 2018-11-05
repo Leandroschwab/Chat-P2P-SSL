@@ -3,10 +3,10 @@
 
 Abrir janela sempre q alguem tentar iniciar um chat --feito
 Informar sua senha publica sempre que requisitado. --feito
-Criar senha simetrica sempre que iniciar uma comunicação com outro usuario--feito
+Criar senha simetrica sempre que iniciar uma comunicação com outro usuario 8
 adicionar automaticamente outra pessoa. --feito
-encriptar a mensagem antes de enviar.--feito
-perguntar nome e senha no primeiro login 
+encriptar a mensagem antes de enviar.
+perguntar nome e senha no primeiro login
 
 Separar as listbox com usuario on/Offline -- feito
 online pode clicar offline N pode. -- feito
