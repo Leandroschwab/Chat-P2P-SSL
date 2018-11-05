@@ -33,7 +33,7 @@ def checkOnlineALL(usuarios, VarData):
         else:
             VarData['ListboxOffline'].insert(END,
                                              Valor['ip'] + ':' + Valor['porta'])
-    VarData['root'].after(1000, checkOnlineALL, usuarios, VarData)
+    VarData['root'].after(10000, checkOnlineALL, usuarios, VarData)
 
 
 
