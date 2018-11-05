@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 from Tkinter import *
-import ttk
+#import ttk
 
 from threading import Semaphore
 from Server import *
@@ -29,7 +29,7 @@ def Send(ChatEntry1, ChatText1, Amigo):
     ciphertext = cipher_aes.encrypt(Var)
 
     print "ciphertext " + ciphertext
-    mensagem = "Mensagem-chat-+,+-" + str(VarData['porta']) + "-+,+-" + ciphertext + "-+;+-"
+    mensagem = "Mensagem-chat-+,+-" + str(VarData['nome']) + "-+,+-" + ciphertext + "-+;+-"
 
     connS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
     connS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -55,6 +55,7 @@ def Add_Friend():
     IP_Entry.place(relx=0.475, rely=0.167, height=20, relwidth=0.41)
 
     PORT_Entry = Entry(ADD)
+    PORT_Entry.bind("<Return>", (lambda event: Add_Friend2()))
     PORT_Entry.place(relx=0.475, rely=0.4, height=20, relwidth=0.41)
 
     Label2 = Label(ADD)
@@ -64,6 +65,8 @@ def Add_Friend():
     Button1 = Button(ADD)
     Button1.place(relx=0.4, rely=0.667, height=44, width=87)
     Button1.configure(background="#d9d9d9", text='Adicionar', width=87, command=Add_Friend2)
+
+
 
 
 def Add_Friend2():
@@ -117,6 +120,7 @@ def newWindow(Amigo, id):
     ChatFrame3.configure(relief=GROOVE, background="#d9d9d9", width=525)
 
     ChatEntry1 = Entry(ChatFrame3)
+    ChatEntry1.bind("<Return>", (lambda event:Send(ChatEntry1, ChatText1, Amigo) ))
     ChatEntry1.place(relx=0.019, rely=0.118, height=60, relwidth=0.668)
     ChatEntry1.configure(width=354)
 
