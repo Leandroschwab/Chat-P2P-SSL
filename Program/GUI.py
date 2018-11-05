@@ -29,7 +29,7 @@ def Send(ChatEntry1, ChatText1, Amigo):
     ciphertext = cipher_aes.encrypt(Var)
 
     print "ciphertext " + ciphertext
-    mensagem = "Mensagem-chat-+,+-" + str(VarData['nome']) + "-+,+-" + ciphertext + "-+;+-"
+    mensagem = "Mensagem-chat-+,+-" + str(VarData['porta']) + "-+,+-" + ciphertext + "-+;+-"
 
     connS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
     connS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
