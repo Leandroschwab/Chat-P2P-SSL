@@ -21,12 +21,10 @@ def createMyKeys(VarData):
         print 'Criando chave privada!'
         private_key = RSA.generate(1024)
         public_key = private_key.publickey()
-        # print(private_key.exportKey(format='PEM'))
-        # print(public_key.exportKey(format='PEM'))
-
         VarData['myprivatekey'] = private_key
         VarData['mypublickey'] = public_key
-        print VarData['mypublickey']
+        print private_key.exportKey()
+        print public_key.exportKey()
         prv_file = open('Data/' + str(VarData['porta']) + "/private.pem", "w")
         prv_file.write("{}".format(private_key.exportKey()))
         pub_file = open('Data/' + str(VarData['porta']) + "/public.pem", "w")
@@ -36,6 +34,8 @@ def createMyKeys(VarData):
 def createSession_key(VarData, userValor):
     print "createSession_key: started"
     session_key = Random.new().read(16)
+    print "Criando chave AES" + session_key.encode('hex')
+
     Clientepub_file = open('Data/' + str(VarData['porta']) + "/" + str(userValor['porta']) + "public.pem", "r")
     Clientpublic_key = RSA.importKey(Clientepub_file.read())
     cipher_rsa = PKCS1_OAEP.new(Clientpublic_key)

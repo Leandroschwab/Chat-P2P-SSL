@@ -99,9 +99,9 @@ def novaConn(conn, usuarios, VarData):
                     enc_session_key = msgRecA[2]
                     cipher_rsa = PKCS1_OAEP.new(VarData['myprivatekey'])
                     session_key = cipher_rsa.decrypt(enc_session_key)
+                    print "Recebendo chave AES" + session_key.encode('hex')
                     id = getIDPort(porta,usuarios)
                     usuarios[id]['ChatAESKey'] = session_key
-                    print session_key
 
         except Exception as e:
             print('Um erro ocorreu!')
@@ -118,7 +118,7 @@ def mensagemChat(usuarios, msgRecA, VarData):
     id = getIDPort(porta, usuarios)  # int
 
     session_key = usuarios[id]['ChatAESKey']  # encryptacao
-    print session_key
+    print "Recebendo ciphertext " + ciphertext.encode('hex')
     cipher = AES.new(session_key, AES.MODE_ECB)
     text = cipher.decrypt(ciphertext)
     try:

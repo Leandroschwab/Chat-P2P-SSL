@@ -28,7 +28,7 @@ def Send(ChatEntry1, ChatText1, Amigo):
     cipher_aes = AES.new(session_key, AES.MODE_ECB)
     ciphertext = cipher_aes.encrypt(Var)
 
-    print "ciphertext " + ciphertext
+    print "enviando ciphertext " + ciphertext.encode('hex')
     mensagem = "Mensagem-chat-+,+-" + str(VarData['porta']) + "-+,+-" + ciphertext + "-+;+-"
 
     connS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
@@ -207,8 +207,8 @@ if __name__ == "__main__":
     global usuarios
     global VarData
     VarData = {}
-    VarData['nome'] = raw_input("digite a nome: ")
-    VarData['porta'] = input("digite a porta: ")
+    VarData['nome'] = raw_input("Digite seu nome: ")
+    VarData['porta'] = input("Digite a porta: ")
     VarData['mutex'] = Semaphore()
     VarData['openChat'] = ""
     VarData['Openboolean'] = True
