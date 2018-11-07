@@ -71,21 +71,15 @@ def Add_Friend():
 
 def Add_Friend2():
     global PORT_Entry, IP_Entry, ADD
-    Temp = IP_Entry.get()
-    Temp2 = PORT_Entry.get()
-
-    addUsuarioDB(Temp, Temp2, VarData)  # add Usuario no Banco de dados
-
-    print Temp
     Valor = {}
-    Valor['ip'] = Temp
-    Valor['porta'] = Temp2
+    Valor['ip'] = IP_Entry.get()
+    Valor['porta'] = PORT_Entry.get()
+    ### Se o VarData já tem o ip/porta porque criar essa nova variável?
+    addUsuarioDB(Valor['ip'], Valor['porta'], VarData)  # add Usuario no Banco de dados
 
     usuarios.append(Valor)
     ADD.destroy()
     return  # n entendi isso
-
-    ADD.mainloop()
 
 
 def OpenChat(event):
@@ -128,7 +122,10 @@ def newWindow(Amigo, id):
     ChatButton1.place(relx=0.774, rely=0.235, height=44, width=87)
     ChatButton1.configure(background="#d9d9d9", text='Enviar', width=87)
     ChatButton1.configure(command=lambda *args: Send(ChatEntry1, ChatText1, Amigo))
+
+    ### Crypto_Functions
     createSession_key(VarData, Amigo)
+
     usuarios[id]['Janela'] = True  # armazena a informaçao q a janela esta aberta
     usuarios[id]['ChatText'] = ChatText1  # armazena a informaçao do local da janela,
     # para ser usado pelo servidor escrever na janela
@@ -218,7 +215,7 @@ if __name__ == "__main__":
     VarData['Openboolean'] = True
 
     root = Tk()
-    root.title('Chat p2p ' + str(VarData['porta']))
+    root.title('Chat p2p ' + str(VarData['nome']))
     root.geometry('600x524+368+93')
     root.configure(background="#d9d9d9")
 
@@ -273,21 +270,27 @@ if __name__ == "__main__":
     Offline.place(relx=0.65, rely=0.267, height=31, width=134)
     Offline.configure(background="#d9d9d9", text='Offline', width=134)
 
-    createDB(VarData)  # Cria caso nao exista o banco de dados
-    createMyKeys(VarData)  #
-
+    #### DB_Functions
+    createDB(VarData)
     usuarios = getUsuariosDB(VarData)  # pega todos usuario no banco de dados
+
+    #### Crypto_Functions
+    createMyKeys(VarData)
 
     HOST = ''  # Symbolic name meaning all available interfaces
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # IPv4,tipo de socket
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((HOST, VarData['porta']))  # liga o socket com IP e porta
 
+    ### Server
     print "iniciando servidor"
     t = Thread(target=server, args=(s, VarData, usuarios))
     t.start()
     VarData['ip'] = socket.gethostbyname(socket.gethostname())
+
+    ### Controll_Functions
     checkOnlineALL(usuarios, VarData)
+
     openNewChat(usuarios, VarData)
 
     root.mainloop()
