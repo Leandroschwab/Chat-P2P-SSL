@@ -24,3 +24,8 @@ Variavel global quando add amigo, pode causar erro caso o usuario abra duas jane
 
 
 
+!Segunda etapa
+Chat em broadcast
+"Login" PGP
+
+
