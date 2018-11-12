@@ -160,6 +160,7 @@ def newWindow2(Amigo, id, mensagem):
 
     ChatEntry1 = Entry(ChatFrame3)
     ChatEntry1.place(relx=0.019, rely=0.118, height=60, relwidth=0.668)
+    ChatEntry1.bind("<Return>", (lambda event: Send(ChatEntry1, ChatText1, Amigo)))
     ChatEntry1.configure(width=354)
 
     ChatButton1 = Button(ChatFrame3)

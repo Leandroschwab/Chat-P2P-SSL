@@ -20,6 +20,7 @@ def createMyKeys(VarData):
     else:
         print 'Criando chave privada!'
         private_key = RSA.generate(1024)
+        print 'Criando chave publica!'
         public_key = private_key.publickey()
         VarData['myprivatekey'] = private_key
         VarData['mypublickey'] = public_key
