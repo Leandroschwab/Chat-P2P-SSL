@@ -9,7 +9,9 @@ from DB_Funcions import *
 from Controll_functions import *
 from Crypto_Functions import *
 
-
+########################################################################################################################
+#Envia a mensagem encryptada
+########################################################################################################################
 def Send(ChatEntry1, ChatText1, Amigo):
     print "Send: Started"
     Var = ChatEntry1.get()
@@ -189,8 +191,8 @@ def openNewChat(usuarios, VarData):
         id = int(data[0])
         mensagem = data[1]
         # print "openNewChat: UnLock"
-        VarData['openChat'] = ""
-        VarData['Openboolean'] = True
+        VarData['openChat'] = ""                    #Usado para verificar se a janela esta aberta
+        VarData['Openboolean'] = True                #retirar?
         VarData['root'].after(50, openNewChat, usuarios, VarData)
         newWindow2(usuarios[id], id, mensagem)
 
@@ -212,8 +214,8 @@ if __name__ == "__main__":
     VarData['nome'] = raw_input("Digite seu nome: ")
     VarData['porta'] = input("Digite a porta: ")
     VarData['mutex'] = Semaphore()
-    VarData['openChat'] = ""
-    VarData['Openboolean'] = True
+    VarData['openChat'] = ""                    #Usado para verificar se a janela esta aberta
+    VarData['Openboolean'] = True               #retirar?
 
     root = Tk()
     root.title('Chat p2p ' + str(VarData['nome']))

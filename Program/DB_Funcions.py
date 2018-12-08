@@ -4,7 +4,9 @@ import socket
 import sqlite3
 from Controll_functions import *
 
-
+########################################################################################################################
+#Cria Banco de dados caso nao exista
+########################################################################################################################
 def createDB(VarData):
     try:
         os.mkdir('Data/' + str(VarData['porta']))
@@ -24,7 +26,9 @@ def createDB(VarData):
         print "banco de dados ja existe"
     connSQL.close()
 
-
+########################################################################################################################
+#Carrega a lista de usuarios do banco de dados
+########################################################################################################################
 def getUsuariosDB(VarData):  # retorna uma matriz/lista no formato usuario=getUsuariosDB()
     print "getUsuariosDB: started"  # pode chamar utilizando usuario[i]['ip'] ou usuario[i]['porta']
     usuarios = []
@@ -44,7 +48,9 @@ def getUsuariosDB(VarData):  # retorna uma matriz/lista no formato usuario=getUs
     connSQL.close()
     return usuarios
 
-
+########################################################################################################################
+#Adiciona Banco de dados ao banco de dados
+########################################################################################################################
 def addUsuarioDB(ip, porta, VarData):  # addUsuarioDB("123.456.779.231","5050")
     print "addUsuarioDB: started"
     connSQL = sqlite3.connect('Data/' + str(VarData['porta']) + '/Database.db')

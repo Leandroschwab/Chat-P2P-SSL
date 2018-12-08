@@ -2,7 +2,9 @@
 from Tkinter import *
 import socket
 
-
+########################################################################################################################
+#Checa o status de um usuario
+########################################################################################################################
 def checkOnlineOne(ip, porta,VarData):
     try:
         conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # qw12IPv4,tipo de socket
@@ -19,7 +21,9 @@ def checkOnlineOne(ip, porta,VarData):
         # print e
         return False
 
-
+########################################################################################################################
+#Checa o status de todos os usuarios
+########################################################################################################################
 def checkOnlineALL(usuarios, VarData):
     #print "checando usuarios"
     VarData['ListboxOnline'].delete(0, END)

@@ -3,7 +3,9 @@ import socket
 from ThreadServer import *
 from threading import Thread
 
-
+########################################################################################################################
+#Thread-server que gerencia as conexoes recebidas
+########################################################################################################################
 def server(s, VarData, usuarios):
 
 

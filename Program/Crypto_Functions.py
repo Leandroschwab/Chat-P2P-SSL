@@ -6,7 +6,9 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto import Random
 
-
+########################################################################################################################
+#Cria ou carrega chave privada e publica quando inicia o programa
+########################################################################################################################
 def createMyKeys(VarData):
     if os.path.exists('Data/' + str(VarData['porta']) + '/private.pem'):
         print 'Carregando chaves!'
@@ -31,7 +33,9 @@ def createMyKeys(VarData):
         pub_file = open('Data/' + str(VarData['porta']) + "/public.pem", "w")
         pub_file.write("{}".format(public_key.exportKey()))
 
-
+########################################################################################################################
+#Cria chave simetrica quando Inicia o programa
+########################################################################################################################
 def createSession_key(VarData, userValor):
     print "createSession_key: started"
     session_key = Random.new().read(16)
@@ -51,7 +55,9 @@ def createSession_key(VarData, userValor):
     connS.sendall(mensagem)
     connS.close()
 
-
+########################################################################################################################
+#Teste :)
+########################################################################################################################
 if __name__ == "__main__":
     private_key = RSA.generate(1024)
     public_key = private_key.publickey()

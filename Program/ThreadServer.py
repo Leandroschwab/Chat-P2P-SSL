@@ -9,7 +9,9 @@ import traceback
 
 from DB_Funcions import addUsuarioDB
 
-
+########################################################################################################################
+#Thread-servercliente para cada conexao recebida
+########################################################################################################################
 def novaConn(conn, usuarios, VarData):
     while 1:
         try:
@@ -110,7 +112,9 @@ def novaConn(conn, usuarios, VarData):
             break
     conn.close()
 
-
+########################################################################################################################
+#Imprime a a mensagem recebida na tela
+########################################################################################################################
 def mensagemChat(usuarios, msgRecA, VarData):
     print "mensagemChat: started"
     porta = msgRecA[1]
@@ -133,7 +137,9 @@ def mensagemChat(usuarios, msgRecA, VarData):
         print "Exception : janela esta fechada  "
         VarData['openChat'] = str(id) + "$+$" + text
 
-
+########################################################################################################################
+#Busca o ID referente ao usuario
+########################################################################################################################
 def getIDPort(porta, usuarios):
     #print "getIDPort: started"
     i = 0
